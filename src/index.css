@@ -15,7 +15,8 @@
     color: #1a1a1a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    padding-top: 70px;
+    padding-top: 0;
+    margin: 0;
   }
 }
 

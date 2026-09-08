@@ -1,0 +1,47 @@
+[
+  {
+    "number": "01",
+    "title": "Log Ingestion Engine",
+    "category": "Backend Engineering",
+    "status": "Complete",
+    "statusTone": "complete",
+    "description": "A robust backend system for ingesting, processing, and managing high-volume log data across distributed systems.",
+    "highlights": [
+      "Real-time data pipelines",
+      "Historical log retrieval",
+      "Designed for high-volume workloads"
+    ],
+    "technologies": ["Node.js", "TypeScript", "PostgreSQL"],
+    "githubUrl": "https://github.com/levilex-kilobytes/-Log-Ingestion-Engine"
+  },
+  {
+    "number": "02",
+    "title": "Feature Flag System",
+    "category": "Full-Stack Development",
+    "status": "Complete",
+    "statusTone": "complete",
+    "description": "A feature management platform for controlled rollouts, A/B testing, and progressive deployment strategies.",
+    "highlights": [
+      "Segment-based feature visibility",
+      "Safer progressive releases",
+      "Deployment and release decoupling"
+    ],
+    "technologies": ["React", "Node.js", "REST API"],
+    "githubUrl": "https://github.com/levilex-kilobytes/feature-flag-system"
+  },
+  {
+    "number": "03",
+    "title": "Travel Planner Dashboard",
+    "category": "Full-Stack Development",
+    "status": "In Progress",
+    "statusTone": "progress",
+    "description": "An all-in-one travel management application for discovering destinations, checking weather, and building detailed itineraries.",
+    "highlights": [
+      "Destination discovery",
+      "Real-time weather data",
+      "Interactive itinerary planning"
+    ],
+    "technologies": ["React", "TypeScript", "API Integration"],
+    "githubUrl": "https://github.com/levilex-kilobytes?tab=repositories"
+  }
+]

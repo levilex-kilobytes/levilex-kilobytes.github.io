@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import projects from "../data/projects.json";
 
 const XIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true" className="w-4 h-4 fill-current">
@@ -432,8 +433,8 @@ const AboutMe = () => {
 
               <div className="pt-6 border-t border-black/5 mt-6">
                 <a
-                  href="/resume.pdf"
-                  download="Levi_Monda_Resume.pdf"
+                  href="/Levi_Monda_CV.pdf"
+                  download="Levi_Monda_CV.pdf"
                   className="btn btn-primary inline-flex"
                 >
                   <i className="fas fa-download"></i> Download My Resume →
@@ -526,109 +527,95 @@ const AboutMe = () => {
       {/* ===== PROJECTS ===== */}
       <section id="projects" className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
-          <div className="max-w-4xl mx-auto text-center mb-12">
-            <span className="section-label">Selected Projects</span>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-              A curated selection of software solutions engineered to address
-              real-world challenges.
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+            <div className="max-w-2xl">
+              <span className="section-label">Selected Projects</span>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+                Practical software, thoughtfully engineered.
+              </h2>
+              <p className="text-gray-500 mt-4 leading-relaxed">
+                A look at systems and products I have built to solve real
+                problems, improve workflows, and create better experiences.
+              </p>
+            </div>
             <a
               href="https://github.com/levilex-kilobytes?tab=repositories"
               target="_blank"
               rel="noreferrer"
-              className="inline-block mt-4 text-primary font-medium hover:translate-x-1 transition-transform"
+              className="inline-flex items-center self-start md:self-auto text-primary font-semibold hover:translate-x-1 transition-transform"
             >
-              All GitHub Repositories →
+              Browse all repositories{" "}
+              <span className="ml-2" aria-hidden="true">
+                →
+              </span>
             </a>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-black/5 shadow-sm">
-              <div className="flex justify-between items-start mb-3">
-                <div className="text-4xl font-bold text-primary/20">01</div>
-                <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">
-                  ✅ Complete
-                </span>
-              </div>
-              <h3 className="text-2xl font-semibold mb-3">
-                Log Ingestion Engine
-              </h3>
-              <p className="text-gray-500 leading-relaxed mb-4">
-                A robust backend system engineered to ingest, process, and
-                manage high-volume log data with efficient data pipeline
-                architecture, supporting real-time analytics and historical log
-                retrieval across distributed systems.
-              </p>
-              <p className="text-sm font-semibold uppercase tracking-wider text-primary mb-3">
-                Backend Engineering
-              </p>
-              <a
-                href="https://github.com/levilex-kilobytes/-Log-Ingestion-Engine"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center text-primary font-medium hover:translate-x-1 transition-transform"
+            {projects.map((project) => (
+              <article
+                key={project.number}
+                className="group flex flex-col bg-white rounded-2xl p-6 md:p-8 border border-black/5 shadow-sm hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
               >
-                View on GitHub →
-              </a>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-black/5 shadow-sm">
-              <div className="flex justify-between items-start mb-3">
-                <div className="text-4xl font-bold text-primary/20">02</div>
-                <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">
-                  ✅ Complete
-                </span>
-              </div>
-              <h3 className="text-2xl font-semibold mb-3">
-                Feature Flag System
-              </h3>
-              <p className="text-gray-500 leading-relaxed mb-4">
-                An advanced feature flagging platform designed for controlled
-                feature rollouts, A/B testing, and progressive deployment
-                strategies. Enables teams to decouple deployment from release
-                and manage feature visibility across different user segments.
-              </p>
-              <p className="text-sm font-semibold uppercase tracking-wider text-primary mb-3">
-                Full-Stack Development
-              </p>
-              <a
-                href="https://github.com/levilex-kilobytes/feature-flag-system"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center text-primary font-medium hover:translate-x-1 transition-transform"
-              >
-                View on GitHub →
-              </a>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-black/5 shadow-sm">
-              <div className="flex justify-between items-start mb-3">
-                <div className="text-4xl font-bold text-primary/20">03</div>
-                <span className="bg-amber-100 text-amber-700 text-xs font-semibold px-3 py-1 rounded-full">
-                  🚧 In Progress
-                </span>
-              </div>
-              <h3 className="text-2xl font-semibold mb-3">
-                Travel Planner Dashboard
-              </h3>
-              <p className="text-gray-500 leading-relaxed mb-4">
-                A comprehensive, all-in-one travel management application
-                designed to streamline the entire trip planning process. It
-                empowers users to discover destinations, check real-time weather
-                conditions, and build detailed itineraries all from a single,
-                intuitive interface.
-              </p>
-              <p className="text-sm font-semibold uppercase tracking-wider text-primary mb-3">
-                Full-Stack Development
-              </p>
-              <a
-                href="https://github.com/levilex-kilobytes?tab=repositories"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center text-primary font-medium hover:translate-x-1 transition-transform"
-              >
-                View on GitHub →
-              </a>
-            </div>
+                <div className="flex justify-between items-start mb-6">
+                  <span className="text-5xl font-bold text-primary/20">
+                    {project.number}
+                  </span>
+                  <span
+                    className={`text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded-full ${
+                      project.statusTone === "complete"
+                        ? "bg-green-50 text-green-700"
+                        : "bg-amber-50 text-amber-700"
+                    }`}
+                  >
+                    {project.status}
+                  </span>
+                </div>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary mb-3">
+                  {project.category}
+                </p>
+                <h3 className="text-2xl font-semibold mb-3">{project.title}</h3>
+                <p className="text-gray-500 leading-relaxed mb-5">
+                  {project.description}
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {project.highlights.map((highlight) => (
+                    <li
+                      key={highlight}
+                      className="flex items-start gap-2 text-sm text-gray-600"
+                    >
+                      <span
+                        className="text-primary font-bold"
+                        aria-hidden="true"
+                      >
+                        +
+                      </span>
+                      {highlight}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap gap-2 mt-auto mb-6">
+                  {project.technologies.map((technology) => (
+                    <span
+                      key={technology}
+                      className="px-2.5 py-1 rounded-md bg-gray-50 text-gray-500 text-xs font-medium"
+                    >
+                      {technology}
+                    </span>
+                  ))}
+                </div>
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center text-primary font-semibold group-hover:translate-x-1 transition-transform"
+                >
+                  View project{" "}
+                  <span className="ml-2" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </article>
+            ))}
           </div>
         </div>
       </section>
