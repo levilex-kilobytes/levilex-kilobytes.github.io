@@ -433,8 +433,8 @@ const AboutMe = () => {
 
               <div className="pt-6 border-t border-black/5 mt-6">
                 <a
-                  href="/Levi_Monda_CV.pdf"
-                  download="Levi_Monda_CV.pdf"
+                  href="/Levi_Monda_resume.pdf"
+                  download="Levi_Monda_Resume.pdf"
                   className="btn btn-primary inline-flex"
                 >
                   <i className="fas fa-download"></i> Download My Resume →
