@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import projects from "../data/projects.json";
+import { capturePortfolioEvent } from "../analytics";
 
 const XIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true" className="w-4 h-4 fill-current">
@@ -8,6 +9,9 @@ const XIcon = () => (
 );
 
 const AboutMe = () => {
+  const [isDarkTheme, setIsDarkTheme] = useState(
+    () => localStorage.getItem("portfolio-theme") !== "light",
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [expandedPosts, setExpandedPosts] = useState<Record<number, boolean>>(
@@ -27,11 +31,38 @@ const AboutMe = () => {
   const maxRetries = 1;
 
   const togglePost = (index: number) => {
+    const willExpand = !expandedPosts[index];
     setExpandedPosts((prev) => ({
       ...prev,
       [index]: !prev[index],
     }));
+    if (willExpand) {
+      capturePortfolioEvent("blog_post_expanded", { post_index: index + 1 });
+    }
   };
+
+  const renderThemeToggle = (isMobile = false) => (
+    <button
+      type="button"
+      aria-label={`Switch to ${isDarkTheme ? "light" : "dark"} theme`}
+      aria-pressed={isDarkTheme}
+      onClick={() => {
+        const nextTheme = !isDarkTheme;
+        setIsDarkTheme(nextTheme);
+        capturePortfolioEvent("theme_changed", {
+          theme: nextTheme ? "dark" : "light",
+        });
+        if (isMobile) setIsMenuOpen(false);
+      }}
+      className={`theme-toggle ${isMobile ? "theme-toggle-mobile" : ""}`}
+    >
+      <i
+        className={`fas ${isDarkTheme ? "fa-sun" : "fa-moon"}`}
+        aria-hidden="true"
+      ></i>
+      <span>{isDarkTheme ? "Light theme" : "Dark theme"}</span>
+    </button>
+  );
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -86,6 +117,7 @@ const AboutMe = () => {
         }
 
         setFormStatus("success");
+        capturePortfolioEvent("contact_form_submitted");
         setFormData({ name: "", email: "", subject: "", message: "" });
         setRetryCount(0);
 
@@ -124,17 +156,17 @@ const AboutMe = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark-theme", isDarkTheme);
+    document.documentElement.style.colorScheme = isDarkTheme ? "dark" : "light";
+    localStorage.setItem("portfolio-theme", isDarkTheme ? "dark" : "light");
+  }, [isDarkTheme]);
+
   return (
     <>
       {/* ===== NAVIGATION ===== */}
       <nav className={`navbar ${isScrolled ? "navbar-scrolled" : ""}`}>
         <div className="max-w-6xl mx-auto px-4 md:px-8 flex justify-between items-center h-[60px]">
-          <div className="flex-shrink-0">
-            <span className="brand-name text-lg md:text-xl text-dark transition-colors duration-300">
-              Levi Monda
-            </span>
-          </div>
-
           <ul className="hidden md:flex list-none gap-8 items-center m-0 p-0">
             <li>
               <a
@@ -198,6 +230,7 @@ const AboutMe = () => {
               <span className="status-dot"></span>
               Available for work
             </span>
+            {renderThemeToggle()}
           </div>
 
           <div
@@ -269,83 +302,77 @@ const AboutMe = () => {
                 Contact
               </a>
             </li>
+            <li>{renderThemeToggle(true)}</li>
           </ul>
         </div>
       </nav>
 
       {/* ===== HERO ===== */}
-      <section className="relative w-full min-h-screen flex flex-col items-center justify-center px-4 md:px-8 py-16 overflow-hidden">
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(180, 120, 80, 0.45), rgba(180, 120, 80, 0.45)), url('/me.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: "#d4a574",
-          }}
-        ></div>
+      <section className="hero-section relative w-full min-h-screen flex items-center justify-center px-4 md:px-8 py-16 bg-[#eceff1] overflow-hidden">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] items-center gap-10 md:gap-16">
+          <div className="text-left">
+            <h1 className="hero-eyebrow hero-eyebrow-rainbow mb-6 inline-flex items-center gap-2.5 rounded-full border border-[#986d64]/20 bg-white/60 px-4 py-2 text-xs font-bold text-[#8a625b] uppercase tracking-[0.2em] shadow-sm">
+              <span className="hero-role-dot" aria-hidden="true"></span>
+              Software Developer
+            </h1>
 
-        <div className="relative z-2 max-w-5xl mx-auto text-center">
-          <h1 className="text-sm font-semibold text-red-100/90 uppercase tracking-[4px] mb-5">
-            SOFTWARE DEVELOPER
-          </h1>
+            <div className="hero-headlines space-y-1.5 mb-6 text-[#393332] uppercase tracking-[-0.04em] leading-[0.9]">
+              <p className="text-3xl md:text-5xl lg:text-6xl font-black">
+                <span className="hero-accent text-[#986d64]">BUILDING</span> IDEAS
+              </p>
+              <p className="text-3xl md:text-5xl lg:text-6xl font-black">
+                <span className="hero-accent text-[#986d64]">SOLVING</span> PROBLEMS
+              </p>
+              <p className="text-3xl md:text-5xl lg:text-6xl font-black">
+                <span className="hero-accent text-[#986d64]">CREATING</span> IMPACT
+              </p>
+            </div>
 
-          <div className="space-y-1.5 mb-6 text-white uppercase tracking-[-0.04em] leading-[0.9]">
-            <p className="text-3xl md:text-5xl lg:text-6xl font-black">
-              <span className="text-[#ffd7d7]">BUILDING</span> IDEAS
+            <p className="hero-description text-base md:text-lg text-[#6c625e] max-w-xl leading-relaxed mb-8">
+              I build modern web apps, backend systems, and APIs that turn
+              real-world problems into practical solutions.
             </p>
-            <p className="text-3xl md:text-5xl lg:text-6xl font-black">
-              <span className="text-[#ffd7d7]">SOLVING</span> PROBLEMS
-            </p>
-            <p className="text-3xl md:text-5xl lg:text-6xl font-black">
-              <span className="text-[#ffd7d7]">CREATING</span> IMPACT
-            </p>
+
+            <div className="flex flex-wrap gap-4 justify-start">
+              <a
+                href="#projects"
+                className="hero-primary btn btn-primary bg-[#986d64] hover:bg-[#805950] shadow-[0_4px_12px_rgba(120,80,72,0.18)] hover:shadow-[0_6px_20px_rgba(120,80,72,0.24)] uppercase tracking-wider"
+              >
+                <i className="fas fa-eye"></i> View My Projects
+              </a>
+              <a
+                href="#contact"
+                className="hero-secondary btn btn-outline uppercase tracking-wider text-[#554944] border-[#8a756f]/35 hover:bg-[#79615a] hover:text-white hover:border-[#79615a]"
+              >
+                <i className="fas fa-comment"></i> Let's Connect
+              </a>
+            </div>
           </div>
 
-          <p className="text-base md:text-lg text-red-50/90 max-w-2xl mx-auto leading-relaxed mb-8">
-            I build modern web apps, backend systems, and APIs that turn
-            real-world problems into practical solutions.
-          </p>
-
-          <div className="flex flex-wrap gap-4 justify-center">
-            <a
-              href="#projects"
-              className="btn btn-primary uppercase tracking-wider"
-            >
-              <i className="fas fa-eye"></i> View My Projects
-            </a>
-            <a
-              href="#contact"
-              className="btn btn-outline uppercase tracking-wider"
-            >
-              <i className="fas fa-comment"></i> Let's Connect
-            </a>
+          <div className="relative w-full max-w-[520px] mx-auto md:mx-0">
+            <div className="hero-photo-frame relative h-[420px] md:h-[560px] overflow-hidden rounded-[30px] border border-[#e1d7cf] bg-[#d9c8ba] shadow-[0_20px_50px_rgba(75,58,50,0.12)]">
+              <img
+                src="/levi.jpeg"
+                alt="Levi Monda"
+                className="w-full h-full object-cover object-center scale-[1.04]"
+              />
+            </div>
           </div>
         </div>
       </section>
       {/* ===== ABOUT ===== */}
       <section id="about" className="py-16 md:py-20 bg-gray-50">
         <div className="w-full px-4 md:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-[1.15fr_1.85fr] gap-8 md:gap-12 items-stretch">
-            <div className="md:col-span-1 h-full">
-              <div className="relative h-full min-h-[420px] overflow-hidden rounded-[28px] border border-amber-100 bg-[#faf7f2] shadow-[0_20px_50px_rgba(180,120,80,0.12)]">
-                <img
-                  src="/me.png"
-                  alt="Levi Monda"
-                  className="w-full h-full object-cover object-center scale-[1.12]"
-                />
-              </div>
-            </div>
-            <div className="md:col-span-1 flex flex-col justify-between h-full">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col justify-between h-full">
               <div>
-                <span className="section-label">About Me</span>
-                <h2 className="section-title-accent text-3xl md:text-4xl font-bold tracking-tight mb-4">
+                <span className="section-label mb-3">About Me</span>
+                <h2 className="section-title-accent text-3xl md:text-4xl font-bold tracking-tight mb-6">
                   Engineering Digital Experiences With Purpose
                 </h2>
 
-                <p className="text-gray-500 leading-relaxed mb-4">
+                <div className="space-y-5 text-gray-500 leading-8">
+                <p>
                   I'm{" "}
                   <strong className="text-primary font-bold">Levi Monda</strong>
                   , a software developer based in Kenya, focused on designing
@@ -353,7 +380,7 @@ const AboutMe = () => {
                   problems and deliver tangible value.
                 </p>
 
-                <p className="text-gray-500 leading-relaxed mb-4">
+                <p>
                   I approach development as more than simply writing code. I
                   enjoy taking complex requirements, breaking them down into
                   well-defined problems, and transforming them into{" "}
@@ -365,7 +392,7 @@ const AboutMe = () => {
                   them into reliable products.
                 </p>
 
-                <p className="text-gray-500 leading-relaxed mb-6">
+                <p>
                   I place strong emphasis on{" "}
                   <strong className="text-primary font-bold">
                     clarity, performance, maintainability, and user experience
@@ -375,52 +402,53 @@ const AboutMe = () => {
                   technology that is purposeful rather than unnecessarily
                   complicated.
                 </p>
+                </div>
 
-                <div className="space-y-5">
+                <div className="mt-10 space-y-8">
                   <div>
-                    <p className="text-lg font-semibold text-dark mb-2">
+                    <p className="text-lg font-semibold text-dark mb-4">
                       Engineering Principles
                     </p>
-                    <div className="space-y-3 text-gray-500">
-                      <p>
-                        <strong className="text-primary font-bold">
-                          Simplicity With Intent
-                        </strong>
-                        <br />
-                        Complexity should be introduced only when it provides
-                        meaningful value.
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-500">
+                      <p className="rounded-xl border border-black/5 bg-white p-5 leading-relaxed">
+                      <strong className="text-primary font-bold">
+                        Simplicity With Intent
+                      </strong>
+                      <br />
+                      Complexity should be introduced only when it provides
+                      meaningful value.
                       </p>
-                      <p>
-                        <strong className="text-primary font-bold">
-                          Solve the Right Problem
-                        </strong>
-                        <br />
-                        Great software begins with understanding the problem
-                        before designing the solution.
+                      <p className="rounded-xl border border-black/5 bg-white p-5 leading-relaxed">
+                      <strong className="text-primary font-bold">
+                        Solve the Right Problem
+                      </strong>
+                      <br />
+                      Great software begins with understanding the problem
+                      before designing the solution.
                       </p>
-                      <p>
-                        <strong className="text-primary font-bold">
-                          Build for the Long Term
-                        </strong>
-                        <br />
-                        Clean architecture, maintainable code, and thoughtful
-                        decisions create software that can evolve.
+                      <p className="rounded-xl border border-black/5 bg-white p-5 leading-relaxed">
+                      <strong className="text-primary font-bold">
+                        Build for the Long Term
+                      </strong>
+                      <br />
+                      Clean architecture, maintainable code, and thoughtful
+                      decisions create software that can evolve.
                       </p>
-                      <p>
-                        <strong className="text-primary font-bold">
-                          Continuous Improvement
-                        </strong>
-                        <br />
-                        Every project is an opportunity to learn, refine my
-                        craft, and become a better engineer.
+                      <p className="rounded-xl border border-black/5 bg-white p-5 leading-relaxed">
+                      <strong className="text-primary font-bold">
+                        Continuous Improvement
+                      </strong>
+                      <br />
+                      Every project is an opportunity to learn, refine my
+                      craft, and become a better engineer.
                       </p>
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-black/5">
-                    <p className="text-sm text-gray-500">
+                  <div className="rounded-xl border border-black/5 bg-white p-5">
+                    <p className="text-gray-500 leading-relaxed">
                       <strong className="text-primary font-bold">
-                        Current Focus:
+                      Current Focus:
                       </strong>{" "}
                       Building modern web applications, strengthening my
                       expertise in software engineering, exploring backend
@@ -435,6 +463,7 @@ const AboutMe = () => {
                 <a
                   href="/Levi_Monda_resume.pdf"
                   download="Levi_Monda_Resume.pdf"
+                  onClick={() => capturePortfolioEvent("resume_downloaded")}
                   className="btn btn-primary inline-flex"
                 >
                   <i className="fas fa-download"></i> Download My Resume →
@@ -605,6 +634,11 @@ const AboutMe = () => {
                 </div>
                 <a
                   href={project.githubUrl}
+                  onClick={() =>
+                    capturePortfolioEvent("project_link_clicked", {
+                      project_number: project.number,
+                    })
+                  }
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center text-primary font-semibold group-hover:translate-x-1 transition-transform"

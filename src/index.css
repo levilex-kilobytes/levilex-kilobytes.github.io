@@ -191,3 +191,224 @@
     z-index: 2;
   }
 }
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(138, 117, 111, 0.3);
+  border-radius: 9999px;
+  background: transparent;
+  color: #554944;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(138, 117, 111, 0.1);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid #986d64;
+  outline-offset: 3px;
+}
+
+.theme-toggle-mobile {
+  padding: 0.5rem 0;
+  border: 0;
+  font-size: 0.875rem;
+}
+
+.hero-role-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: #986d64;
+  box-shadow: 0 0 0 3px rgba(152, 109, 100, 0.12);
+}
+
+.hero-eyebrow-rainbow {
+  color: #ffffff;
+  background-image: linear-gradient(
+    90deg,
+    #ff4d6d,
+    #ff9f1c,
+    #f9f871,
+    #42e695,
+    #00c9ff,
+    #a66cff,
+    #ff4d6d
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 5px rgba(255, 105, 180, 0.55))
+    drop-shadow(0 0 11px rgba(0, 201, 255, 0.35));
+  animation: rainbow-glow 5s linear infinite;
+}
+
+@keyframes rainbow-glow {
+  from {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg)
+      drop-shadow(0 0 5px rgba(255, 105, 180, 0.55))
+      drop-shadow(0 0 11px rgba(0, 201, 255, 0.35));
+  }
+  to {
+    background-position: 300% 50%;
+    filter: hue-rotate(360deg)
+      drop-shadow(0 0 5px rgba(255, 105, 180, 0.55))
+      drop-shadow(0 0 11px rgba(0, 201, 255, 0.35));
+  }
+}
+
+html.dark-theme {
+  color-scheme: dark;
+  background: #191817;
+}
+
+html.dark-theme body {
+  background-color: #191817;
+  color: #eee9e6;
+}
+
+html.dark-theme .navbar {
+  background: rgba(31, 29, 28, 0.94);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+html.dark-theme .navbar .nav-links,
+html.dark-theme .navbar .nav-email {
+  color: #d2c9c5;
+}
+
+html.dark-theme .navbar .nav-links:hover,
+html.dark-theme .navbar .nav-email:hover {
+  color: #ffffff;
+}
+
+html.dark-theme .navbar .hamburger span {
+  background: #eee9e6;
+}
+
+html.dark-theme .theme-toggle {
+  border-color: rgba(238, 233, 230, 0.25);
+  color: #eee9e6;
+}
+
+html.dark-theme .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+html.dark-theme [class~="bg-white"],
+html.dark-theme [class~="bg-gray-50"] {
+  background-color: #22201f;
+}
+
+html.dark-theme [class~="bg-black/5"] {
+  background-color: #292726;
+}
+
+html.dark-theme [class~="bg-white/98"] {
+  background-color: rgba(34, 32, 31, 0.98);
+}
+
+html.dark-theme [class~="text-gray-500"],
+html.dark-theme [class~="text-gray-600"] {
+  color: #c0b8b4;
+}
+
+html.dark-theme [class~="text-dark"] {
+  color: #f0eae7;
+}
+
+html.dark-theme [class~="border-black/5"],
+html.dark-theme [class~="border-black/10"] {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.dark-theme .section-label {
+  color: #d5a69b;
+}
+
+html.dark-theme .section-title-accent {
+  color: #f0d8d2;
+}
+
+html.dark-theme .hero-section {
+  background-color: #211f1e;
+}
+
+html.dark-theme .hero-eyebrow {
+  color: #ead6d1;
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(212, 173, 164, 0.24);
+}
+
+html.dark-theme .hero-role-dot {
+  background: #d4ada4;
+  box-shadow: 0 0 0 3px rgba(212, 173, 164, 0.14);
+}
+
+html.dark-theme .hero-headlines {
+  color: #eee9e6;
+}
+
+html.dark-theme .hero-accent {
+  color: #ff6b6b;
+}
+
+.hero-accent {
+  color: #b4232f;
+}
+
+html.dark-theme .hero-description {
+  color: #c0b8b4;
+}
+
+html.dark-theme .hero-primary {
+  background-color: #986d64;
+}
+
+html.dark-theme .hero-primary:hover {
+  background-color: #805950;
+}
+
+html.dark-theme .hero-secondary {
+  color: #eee9e6;
+  border-color: rgba(212, 173, 164, 0.45);
+}
+
+html.dark-theme .hero-secondary:hover {
+  background-color: #79615a;
+  border-color: #79615a;
+}
+
+html.dark-theme .hero-photo-frame {
+  border-color: #49413d;
+  background-color: #302a27;
+}
+
+html.dark-theme input,
+html.dark-theme textarea {
+  color: #eee9e6;
+}
+
+html.dark-theme input::placeholder,
+html.dark-theme textarea::placeholder {
+  color: #9b918c;
+}
+
+html.dark-theme input:focus,
+html.dark-theme textarea:focus {
+  background-color: #292726;
+}
